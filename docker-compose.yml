@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  vprodb:
+    build:
+      context: ./Docker-files/db
+    image: welkom1/kelvindb
+    container_name: vprodb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: welkom01
+
+  vprocache01:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  vprmq01:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  vproapp:
+    build:
+      context: ./Docker-files/app
+    image: welkom1/kelvinapp
+    container_name: vproapp
+    ports:
+      - "8080:8080"
+
+  vproweb:
+    build:
+      context: ./Docker-files/web
+    image: welkom1/kelvinweb
+    container_name: vproweb
+    ports:
+      - "80:80"
+
